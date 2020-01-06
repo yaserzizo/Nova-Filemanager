@@ -2,6 +2,8 @@
 
 namespace Infinety\Filemanager\Http\Services;
 
+use App\Directory;
+use App\Media;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
@@ -61,6 +63,36 @@ trait GetFiles
      */
     public function getFileData($file, $id)
     {
+        mb_internal_encoding('UTF-8');
+        $project = ' - ';
+        $task = ' - ';
+        if ($file['type'] === 'dir') {
+            $d = Directory::where('name',$this->cleanSlashes($file['path']))->first();
+            if ($d) {
+                $d->load(['project','task']);
+                if ($d->project) {
+                    $project = (mb_strlen($d->project->subject) <= 500)?$d->project->subject: mb_substr($d->project->subject, 0, 500). ' ...';
+                }
+                if ($d->task) {
+                    $task = (mb_strlen($d->task->subject) <= 500)?$d->task->subject: mb_substr($d->task->subject, 0, 500). ' ...';
+                }
+            }
+        }
+        else
+        {
+            $d = Media::where('fullname',$this->cleanSlashes($file['path']))->first();
+            if ($d) {
+                $d->load(['project','task']);
+                if ($d->project) {
+                    //infomb_substr($d->project->subject, 0, 500));
+                    $project = (mb_strlen($d->project->subject) <= 100)?$d->project->subject: mb_substr($d->project->subject, 0, 500). ' ...';
+                }
+                if ($d->task) {
+                    $task = (mb_strlen($d->task->subject) <= 500)?$d->project->subject: mb_substr($d->task->subject, 0, 500). ' ...';
+                }
+            }
+        }
+
         if (! $this->isDot($file) && ! $this->exceptExtensions->contains($file['extension']) && ! $this->exceptFolders->contains($file['basename']) && ! $this->exceptFiles->contains($file['basename']) && $this->accept($file)) {
             $fileInfo = [
                 'id'         => $id,
@@ -75,6 +107,10 @@ trait GetFiles
                 'asset'      => $this->cleanSlashes($this->storage->url($file['basename'])),
                 'can'        => true,
                 'loading'    => false,
+                'project'   =>$project,
+                'task'      =>$task,
+                'cdate'   =>(isset($d->created_at)) ? $d->created_at->format('D d F Y') : '',
+
             ];
 
             if (isset($file['timestamp'])) {

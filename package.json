@@ -19,7 +19,7 @@
         "eslint": "^4.19.1",
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-vue": "^4.4.0",
-        "laravel-mix": "^1.0",
+        "laravel-mix": "^4.0.7",
         "prettier": "^1.14.0"
     },
     "dependencies": {
@@ -33,6 +33,7 @@
         "plyr": "^3.4.3",
         "urijs": "^1.19.1",
         "v-copy": "^0.1.0",
+        "v-tooltip": "^2.0.2",
         "v-viewer": "^1.4.2",
         "vue": "^2.5.0",
         "vue-codemirror": "^4.0.5",

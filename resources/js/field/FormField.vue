@@ -7,7 +7,7 @@
                     <template v-if="field.type == 'image'">
                         <ImageDetail class="block w-full" :file="field" :css="''"></ImageDetail>
                     </template>
-                
+
                     <template v-else>
                         <object class="no-preview" v-html="field.image">
                         </object>
@@ -15,7 +15,7 @@
                 </div>
             </template>
 
-            <modal-filemanager 
+            <modal-filemanager
                 ref="filemanager"
                 :resource="resourceName"
                 :name="field.attribute"
@@ -25,22 +25,22 @@
                 :defaultFolder="defaultFolder"
                 :filter="field.filterBy"
                 :buttons="field.buttons"
-                v-on:open-modal="openModalCreateFolder" 
-                v-on:close-modal="closeFilemanagerModal" 
+                v-on:open-modal="openModalCreateFolder"
+                v-on:close-modal="closeFilemanagerModal"
                 v-on:update-current-path="updateCurrentPath"
                 v-on:showInfoItem="showInfoItem"
                 v-on:uploadFiles="uploadFiles"
                 :value="value">
-                    
+
             </modal-filemanager>
 
-            <DetailPopup 
+            <DetailPopup
                 ref="detailPopup"
                 :info="info"
                 :active="activeInfo"
                 :popup="true"
                 :buttons="field.buttons"
-                v-on:closePreview="closePreview" 
+                v-on:closePreview="closePreview"
                 v-on:refresh="refreshCurrent"
                 v-on:selectFile="setValue"
                 v-on:rename="fileRenamed"

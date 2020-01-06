@@ -102,6 +102,12 @@ class FilemanagerField extends Field implements Cover
 
         return $this->withMeta(['folder' => $folder, 'home' => $folder]);
     }
+    public function lblName($lblName)
+    {
+        $cnt = is_callable($lblName) ? call_user_func($lblName) : $lblName;
+
+        return $this->withMeta(['cnt' => $cnt]);
+    }
 
     /**
      * Set current folder for the field.

@@ -85,6 +85,7 @@ class FilemanagerToolController extends Controller
      */
     public function getInfo(Request $request)
     {
+        //info$this->service->getFileInfo($request->file));
         return $this->service->getFileInfo($request->file);
     }
 
