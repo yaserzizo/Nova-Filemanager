@@ -1,10 +1,10 @@
 <template>
     <portal to="modals" name="Modal FileManager" transition="fade-transition">
         <modal v-if="active">
-<!--
+
             <portal-target name="portal-filemanager">
 
-            </portal-target>-->
+            </portal-target>
 
             <div class="bg-white rounded-lg shadow-lg" style="width: 900px;">
                 <div class="bg-30 flex flex-wrap border-b border-70">
