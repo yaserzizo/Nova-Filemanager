@@ -127,6 +127,7 @@
             <DetailPopup
                 ref="detailPopup"
                 :info="info"
+                :popup="true"
                 :active="activeInfo"
                 v-on:closePreview="closePreview"
                 v-on:refresh="refreshCurrent"
