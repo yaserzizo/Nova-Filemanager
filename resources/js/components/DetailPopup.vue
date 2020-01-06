@@ -2,7 +2,7 @@
     <portal to="portal-filemanager" name="File Details" transition="fade-transition">
         <modal v-if="active" @modal-close="handleClose">
             <div class="bg-white rounded-lg shadow-lg" style="width: 70vw;">
-                
+
                 <div class="bg-30 flex flex-wrap border-b border-70">
                     <div class="w-3/4 px-4 py-3 ">
                         {{ __('Preview of') }} <span class="text-primary-70%">{{ info.name }}</span>
@@ -60,7 +60,7 @@
                                 </iframe>
                             </object>
                         </template>
-                        
+
                         <template v-else>
                             <object class="no-preview" v-html="info.image">
 
@@ -84,7 +84,7 @@
                                     <template v-if="editingName">
 
                                         <input type="text"  v-bind:ref="'inputName'" :style="{ 'width': nameWidth + 'px' }" v-model="nameNoExtension" class=" value px-1 py-1 rounded-r">
-                                    
+
                                         <svg @click="rename" xmlns="http://www.w3.org/2000/svg" class="ml-1 cursor-pointer text-success fill-current" viewBox="0 0 20 20" width="12" height="12"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
 
                                         <svg @click="editingName = !editingName" xmlns="http://www.w3.org/2000/svg" class="ml-1 cursor-pointer" viewBox="0 0 20 20" width="12" height="12"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34 8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83-1.41 1.41L10 11.41l-2.83 2.83-1.41-1.41L8.59 10 5.76 7.17l1.41-1.41L10 8.59l2.83-2.83 1.41 1.41z"/></svg>
@@ -116,7 +116,7 @@
                                 <span class="value bg-white px-1 py-1 rounded-r">{{ info.dimensions }}</span>
                             </div>
 
-                            <div class="info mx-4 mt-6" v-if="info.url">
+                            <!--<div class="info mx-4 mt-6" v-if="info.url">
                                 <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-value">
                                     {{ __('Url') }}
                                 </label>
@@ -125,9 +125,9 @@
                                     <input type="text" class="flex-shrink flex-grow flex-auto text-xs leading-normal w-px flex-1 border border-70 rounded rounded-r-none px-1 relative" :value="info.url" disabled>
                                     <div class="flex -mr-px">
                                         <button class="copy flex items-center leading-normal bg-50 rounded rounded-l-none border border-l-0 border-70 px-3 whitespace-no-wrap text-grey-dark text-xs" v-copy="info.url" v-copy:callback="onCopy">{{ __('Copy') }}</button>
-                                    </div>  
-                                </div>  
-                            </div>
+                                    </div>
+                                </div>
+                            </div>-->
                         </div>
 
                         <div class="info-actions w-full flex flex-wrap self-end justify-end">
@@ -141,19 +141,19 @@
 
 
                                 <template v-if="popup">
-                                    <button @click="selectFile" class="btn btn-default btn-primary">
-                                        {{ __('Select file') }}
+                                    <button @click.prevent="downloadItem()" class="btn btn-default btn-primary">
+                                        {{ __('Download') }}
                                     </button>
                                 </template>
                             </div>
-                            
+
                         </div>
 
                     </div>
 
                 </div>
 
-                
+
             </div>
         </modal>
     </portal>
@@ -210,7 +210,7 @@ export default {
         },
         buttons: {
             default: () => [],
-            required: true,
+            required: false,
         },
     },
 
@@ -297,8 +297,24 @@ export default {
 
         selectFile() {
             this.closePreview();
-            this.$emit('selectFile', this.info);
+            //console.log(this.info)
+           // this.$emit('selectFile', this.info);
         },
+
+        downloadItem() {
+
+            window.axios.get(this.info.url, { responseType: 'blob' })
+                .then(({ data }) => {
+                    const blob = new Blob([data], { type: this.info.mime })
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(blob)
+                    link.download = this.info.name
+                    link.click()
+                    URL.revokeObjectURL(link.href)
+                    this.closePreview();
+                }).catch(error => console.error(error))
+        },
+
 
         handleClose() {
             this.closePreview();
@@ -307,6 +323,8 @@ export default {
 
     mounted() {
         this.loaded = false;
+        //console.log('tst')
+        //console.log(this.buttons)
         this.$nextTick(function() {
             this.messagesRemove = [
                 this.__('Remove File'),
