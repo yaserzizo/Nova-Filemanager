@@ -1,10 +1,10 @@
 <template>
     <portal to="modals" name="Modal FileManager" transition="fade-transition">
         <modal v-if="active">
-
+<!--
             <portal-target name="portal-filemanager">
 
-            </portal-target>
+            </portal-target>-->
 
             <div class="bg-white rounded-lg shadow-lg" style="width: 900px;">
                 <div class="bg-30 flex flex-wrap border-b border-70">
@@ -60,9 +60,9 @@
                                                 <select class="pl-search form-control form-input form-input-bordered w-full" v-model="filterBy" @change="filterFiles">
                                                     <option value="">{{ __('Filter by ...') }}</option>
                                                     <option v-for="(filter, key) in filters" :key="'filter_' + key" :value="key">{{ key }}</option>
-                                                </select>    
+                                                </select>
                                             </template>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -79,8 +79,8 @@
 
                         </div>
 
-                        
-                        <manager 
+
+                        <manager
                             ref="manager"
                             :home="home"
                             :files="files"
@@ -108,7 +108,7 @@
                         <rename-modal ref="renameModal" v-on:refresh="refreshCurrent" />
 
                         <confirm-modal-delete ref="confirmDelete" v-on:refresh="refreshCurrent" />
-        	            
+
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@ export default {
         },
         value: {
             type: String,
-            required: true,
+            required: false,
         },
         currentPath: {
             type: String,
@@ -187,31 +187,37 @@ export default {
         'confirm-modal-delete': ConfirmModalDelete,
     },
 
-    data: () => ({
-        loaded: false,
-        loadingfiles: false,
-        activeDisk: null,
-        activeDiskBackups: [],
-        backupStatusses: [],
-        showUpload: false,
-        showCreateFolder: false,
-        currentPathFolder: this.currentPath,
-        files: [],
-        parent: {},
-        path: [],
-        noFiles: false,
-        view: 'grid',
-        filesToUpload: [],
-        firstTime: true,
-        search: '',
-        filters: [],
-        filterBy: '',
-        filteredExtensions: [],
-        showFilters: false,
-    }),
-
+    data() {
+        return {
+            loaded: false,
+            loadingfiles: false,
+            activeDisk: null,
+            activeDiskBackups: [],
+            backupStatusses: [],
+            showUpload: false,
+            showCreateFolder: false,
+            currentPathFolder: this.currentPath,
+            files: [],
+            parent: {},
+            path: [],
+            noFiles: false,
+            view: 'grid',
+            filesToUpload: [],
+            firstTime: true,
+            search: '',
+            filters: [],
+            filterBy: '',
+            filteredExtensions: [],
+            showFilters: false,
+        }
+    },
+mounted() {
+        //console.log('mnt');
+    //console.log(this.currentPath);
+},
     methods: {
         getData(pathToList) {
+            //console.log('start');
             this.files = [];
             this.parent = {};
             this.path = [];
@@ -282,8 +288,8 @@ export default {
         },
 
         setFileValue(file) {
-            this.closeModal();
-            this.$emit('setFileValue', file);
+          //  this.closeModal();
+           // this.$emit('setFileValue', file);
         },
 
         uploadFilesByButton(e) {
@@ -328,6 +334,7 @@ export default {
                 let currentUrl = new URI();
                 if (currentUrl.hasQuery('path')) {
                     let params = currentUrl.query(true);
+//console.log(params.path)
                     this.currentPath = params.path;
                 }
 
