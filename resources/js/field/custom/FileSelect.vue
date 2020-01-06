@@ -1,16 +1,19 @@
 <template>
-    <div class="flex flex-wrap items-stretch w-full mb-2 relative">
-        <input type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 form-control form-input form-input-bordered-l relative" 
-               :placeholder="__('Select a file')" v-model="value">
-        <div class="flex -mr-px">
-            <span class="filemanager-open flex items-center leading-normal rounded-lg rounded-l-none border border-l-0 border-grey-light bg-40 px-3 whitespace-no-wrap text-grey-dark text-sm cursor-pointer" @click="openModalFilemanager">{{ __('Open FileManager') }}</span>
-        </div>  
-    </div>  
+    <div class="w-3/4 py-4 break-words"><span class=" cursor-pointer whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold mt-1 bg-info-light text-info-dark" @click="openModalFilemanager">
+{{ field.cnt }}</span></div>
+
+<!--        <input type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 form-control form-input form-input-bordered-l relative"
+               :placeholder="__('Select a file')" v-model="value">-->
+<!--        <div>
+
+            <span class="cursor-pointer whitespace-no-wrap px-2 py-1 rounded-full uppercase text-xs font-bold mt-1 bg-info-light text-info-dark" @click="openModalFilemanager">{{ field.cnt }}</span>
+
+    </div>-->
 </template>
 
 <script>
 export default {
-    props: ['value', 'field'],
+    props: ['value', 'field','cnt'],
 
     methods: {
         openModalFilemanager() {
@@ -21,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-.form-input-bordered-l {
+/*.form-input-bordered-l {
     background-color: var(--white);
     border-width: 1px;
     border-color: var(--60);
@@ -32,7 +35,7 @@ export default {
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     border-bottom-right-radius: initial;
     border-top-right-radius: initial;
-}
+}*/
 
 .filemanager-open {
     border-color: var(--60);
